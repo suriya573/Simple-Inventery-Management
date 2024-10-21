@@ -4,13 +4,11 @@ CREATE TABLE Items (
     StockLevel INT,
     SupplierID INT
 );
-
 CREATE TABLE Suppliers (
     SupplierID INT PRIMARY KEY,
     SupplierName VARCHAR(100),
     ContactEmail VARCHAR(100)
 );
-
 CREATE TABLE Orders (
     OrderID INT PRIMARY KEY,
     ItemID INT,
@@ -18,7 +16,6 @@ CREATE TABLE Orders (
     OrderDate DATE,
     FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
 );
-
 INSERT INTO Items (ItemID, ItemName, StockLevel, SupplierID) VALUES
 (1, 'Laptop', 15, 1),
 (2, 'Smartphone', 30, 2),
@@ -39,30 +36,30 @@ INSERT INTO Orders (OrderID, ItemID, QuantityOrdered, OrderDate) VALUES
 (5, 5, 3, '2024-10-06');
 
 
--- 1. List All Items with Stock Levels Below a Certain Threshold
+1. List All Items with Stock Levels Below a Certain Threshold
 SELECT ItemName, StockLevel
 FROM Items
 WHERE StockLevel < 10;
 
--- 2. Retrieve All Orders Placed with a Specific Supplier
+2. Retrieve All Orders Placed with a Specific Supplier
 SELECT O.OrderID, I.ItemName, O.QuantityOrdered, O.OrderDate
 FROM Orders O
 JOIN Items I ON O.ItemID = I.ItemID
 JOIN Suppliers S ON I.SupplierID = S.SupplierID
 WHERE S.SupplierName = 'Tech Suppliers Co.';
 
--- 3. Find the Total Quantity of Each Item Ordered
+3. Find the Total Quantity of Each Item Ordered
 SELECT I.ItemName, SUM(O.QuantityOrdered) AS TotalOrdered
 FROM Orders O
 JOIN Items I ON O.ItemID = I.ItemID
 GROUP BY I.ItemName;
 
--- 4. Retrieve All Suppliers and the Items They Supply
+4. Retrieve All Suppliers and the Items They Supply
 SELECT S.SupplierName, I.ItemName
 FROM Suppliers S
 JOIN Items I ON S.SupplierID = I.SupplierID;
 
--- 5. Find Items That Haven’t Been Ordered Recently (Last 30 Days)
+5. Find Items That Haven’t Been Ordered Recently (Last 30 Days)
 SELECT ItemName
 FROM Items
 WHERE ItemID NOT IN (
